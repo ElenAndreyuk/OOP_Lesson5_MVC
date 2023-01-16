@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositoryFile implements Repository {
-    private UserMapper mapper = new UserMapper();
+    private UserMapperTwo mapper = new UserMapperTwo();
     private FileOperation fileOperation;
 
     public RepositoryFile(FileOperation fileOperation) {
@@ -28,7 +28,7 @@ public class RepositoryFile implements Repository {
         int max = 0;
         for (User item : users) {
             int id = Integer.parseInt(item.getId());
-            if (max < id){
+            if (max < id) {
                 max = id;
             }
         }
@@ -41,17 +41,26 @@ public class RepositoryFile implements Repository {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(String id, User user) {
         List<User> users = getAllUsers();
-        User toEdit = users.stream().filter(i-> i.getId().equals(user.getId())).findFirst().get();
+        User toEdit = users.stream().filter(i -> i.getId().equals(id)).findFirst().get();
         toEdit.setFirstName(user.getFirstName());
         toEdit.setLastName(user.getLastName());
         toEdit.setPhone(user.getPhone());
-        writeDown(users );
+        writeDown(users);
     }
-    private void writeDown(List<User> users){
+
+    @Override
+    public void deleteUser(String id) {
+        List<User> users = getAllUsers();
+        User toDelete = users.stream().filter(i -> i.getId().equals(id)).findFirst().get();
+        users.remove(toDelete);
+        writeDown(users);
+    }
+
+    private void writeDown(List<User> users) {
         List<String> lines = new ArrayList<>();
-        for (User item: users) {
+        for (User item : users) {
             lines.add(mapper.map(item));
         }
         fileOperation.saveAllLines(lines);

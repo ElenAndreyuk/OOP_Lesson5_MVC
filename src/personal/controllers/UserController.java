@@ -20,13 +20,25 @@ public class UserController {
 
     public User readUser(String userId) throws Exception {
         List<User> users = repository.getAllUsers();
+        validationIsHasID(userId);
         for (User user : users) {
             if (user.getId().equals(userId)) {
                 return user;
             }
         }
-
         throw new Exception("User not found");
+    }
+    public void deleteUser(String userID) throws Exception{
+        List<User> users = repository.getAllUsers();
+        validationIsHasID(userID);
+        repository.deleteUser(userID);
+//        for (User user : users) {
+//            if (user.getId().equals(userID)) {
+//                repository.deleteUser(user);
+//                return;
+//            }
+//        }
+
     }
 
     public List<User> readList() {
@@ -38,7 +50,7 @@ public class UserController {
         validationIsHasID(id);
         user.setId(id);
         validateUserWithID(user);
-        repository.updateUser(user);
+        repository.updateUser(id, user);
     }
     private void validateUser(User user) throws Exception {
 
@@ -48,7 +60,6 @@ public class UserController {
         if(user.getLastName().contains(" ")){
             throw new Exception("User last name has wrong symbol");
         }
-//        if(user.getPhone().)
     }
     private void validateUserWithID(User user) throws Exception {
         validateUser(user);

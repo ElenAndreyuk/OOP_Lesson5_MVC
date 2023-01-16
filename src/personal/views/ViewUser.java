@@ -29,7 +29,6 @@ public class ViewUser {
                         break;
                     case READ:
                         String id = prompt("Идентификатор пользователя: ");
-
                         User user = userController.readUser(id);
                         System.out.println(user);
                         break;
@@ -41,6 +40,11 @@ public class ViewUser {
                         String numId = prompt("Идентификатор пользователя для замены данных: ");
                         userController.validationIsHasID(numId);
                         userController.updateUser(numId, createUser());
+                        break;
+                    case DELETE:
+                        String numID = prompt("Идентификатор пользователя: ");
+                        userController.deleteUser(numID);
+                        System.out.println(numID + " удален");
                         break;
                 }
             } catch (Exception e) {
