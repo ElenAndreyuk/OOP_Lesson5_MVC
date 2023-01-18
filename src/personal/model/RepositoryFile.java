@@ -5,15 +5,15 @@ import java.util.List;
 
 public class RepositoryFile implements Repository {
     private UserMapperTwo mapper = new UserMapperTwo();
-    private FileOperation fileOperation;
+    private FileOperationJSON fileOperationJSON;
 
     public RepositoryFile(FileOperation fileOperation) {
-        this.fileOperation = fileOperation;
+        this.fileOperationJSON = fileOperationJSON;
     }
 
     @Override
     public List<User> getAllUsers() {
-        List<String> lines = fileOperation.readAllLines();
+        List<String> lines = fileOperationJSON.readAllLines();
         List<User> users = new ArrayList<>();
         for (String line : lines) {
             users.add(mapper.map(line));
@@ -63,6 +63,6 @@ public class RepositoryFile implements Repository {
         for (User item : users) {
             lines.add(mapper.map(item));
         }
-        fileOperation.saveAllLines(lines);
+        fileOperationJSON.saveAllLines(lines);
     }
 }
